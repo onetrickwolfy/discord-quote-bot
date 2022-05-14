@@ -1,0 +1,11 @@
+loggers:
+  discord_handler:
+    name: discord
+    log_level: 2
+  png_generator:
+    name: png_generator
+    log_level: 2
+  default:
+    name: logs
+    log_level: 2
+  folder: 'logs'
