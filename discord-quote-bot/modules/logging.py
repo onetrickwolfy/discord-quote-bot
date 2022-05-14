@@ -18,16 +18,24 @@ def init_logger(name, log_folder='logs', log_level=logging.DEBUG):
 
     logger.setLevel(log_level)
 
-    handler = logging.FileHandler(
+    files = logging.FileHandler(
         filename=f'{log_folder}/{name}.log',
         encoding='utf-8',
         mode='w'
     )
 
-    handler.setFormatter(logging.Formatter(
+    files.setFormatter(logging.Formatter(
         '%(asctime)s:%(levelname)s:%(name)s: %(message)s')
     )
 
-    logger.addHandler(handler)
+    logger.addHandler(files)
+
+    console = logging.StreamHandler()
+
+    console.setFormatter(logging.Formatter(
+        '%(asctime)s:%(levelname)s:%(name)s: %(message)s')
+    )
+
+    logger.addHandler(console)
 
     return logger
