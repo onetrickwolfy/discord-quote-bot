@@ -1,20 +1,27 @@
+"""Set-up the logger for the project"""
+
+
 import logging
 from os import path, makedirs
 
 
-def create_logs_folder(log_folder):
-    """Create log directory in case it does not exist."""
+def create_if_missing(folder):
+    """Create folder if non-existent"""
 
-    if not path.exists(log_folder):
-        makedirs(log_folder)
+    if not path.exists(folder):
+        makedirs(folder)
 
 
-def init_logger(name, log_folder='logs', log_level=logging.DEBUG):
-    """Set and return a logger."""
+def init_logger(logger_conf):
+    """Initialise the logging system."""
 
-    create_logs_folder(log_folder)
+    log_folder = logger_conf['folder']
+    name = logger_conf['name']
+    log_level = logger_conf['log_level']
 
-    logger = logging.getLogger(name)
+    create_if_missing(log_folder)
+
+    logger = logging.getLogger()
 
     logger.setLevel(log_level)
 
@@ -37,5 +44,3 @@ def init_logger(name, log_folder='logs', log_level=logging.DEBUG):
     )
 
     logger.addHandler(console)
-
-    return logger
