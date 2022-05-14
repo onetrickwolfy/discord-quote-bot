@@ -1,12 +1,14 @@
 """Glue the app together."""
 
 
-from modules import *
+from utils import *
+from yaml import safe_load
 import logging
 
 
 # Grabbing config
-conf = get_config()
+with open('config.yaml', 'r') as file:
+    conf =  safe_load(file)
 logger = conf['logger']
 
 
