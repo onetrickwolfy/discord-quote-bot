@@ -10,8 +10,10 @@ class Test(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @nextcord.slash_command(guild_ids=[TESTING_GUILD_ID],
-                            description="Test command")
+    @nextcord.slash_command(
+        guild_ids=[TESTING_GUILD_ID],
+        description="Test command"
+    )
     async def ping(self, interaction: nextcord.Interaction):
         await interaction.response.send_message("pong")
 
