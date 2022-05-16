@@ -5,14 +5,14 @@ import logging
 from os import path, makedirs
 
 
-def create_if_missing(folder):
+def create_if_missing(folder: str) -> None:
     """Create folder if non-existent"""
 
     if not path.exists(folder):
         makedirs(folder)
 
 
-def init_logger(logger_conf):
+def init_logger(logger_conf: dict) -> None:
     """Initialise the logging system."""
 
     log_folder = logger_conf['folder']
