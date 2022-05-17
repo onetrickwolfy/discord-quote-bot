@@ -1,3 +1,5 @@
+import asyncio
+from time import sleep
 import hikari
 import lightbulb
 
@@ -13,7 +15,8 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
 
     # Unwrap the exception to get the original cause
     exception = event.exception.__cause__ or event.exception
-
+    
+    permanant = False # message won't be deleted.
     if isinstance(exception, lightbulb.NotOwner):
         await event.context.respond("You are not the owner of this bot.")
     elif isinstance(exception, lightbulb.CommandIsOnCooldown):
@@ -21,11 +24,14 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
     else:
         raise exception
 
+    if not permanant:
+        await asyncio.sleep(exception.retry_after if exception.retry_after < 5 else 5)
+        await event.context.delete_last_response()
+
 
 def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(pluging)
-    
-    
-def unload(bot : lightbulb.BotApp) -> None:
-	bot.remove_plugin(pluging)
 
+
+def unload(bot: lightbulb.BotApp) -> None:
+    bot.remove_plugin(pluging)

@@ -20,7 +20,7 @@ async def ping(ctx: lightbulb.Context) -> None:
 
 def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(test_plugin)
-    
-def unload(bot : lightbulb.BotApp) -> None:
-	bot.remove_plugin(test_plugin)
 
+
+def unload(bot: lightbulb.BotApp) -> None:
+    bot.remove_plugin(test_plugin)
