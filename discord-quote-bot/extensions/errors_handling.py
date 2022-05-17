@@ -4,11 +4,12 @@ import hikari
 import lightbulb
 
 
-pluging = lightbulb.Plugin("Error Handing")
+plugin = lightbulb.Plugin("Error Handing")
 
 
-@pluging.listener(lightbulb.CommandErrorEvent)
+@plugin.listener(lightbulb.CommandErrorEvent)
 async def on_error(event: lightbulb.CommandErrorEvent) -> None:
+    
     if isinstance(event.exception, lightbulb.CommandInvocationError):
         await event.context.respond(f"Something went wrong during invocation of command `{event.context.command.name}`.")
         raise event.exception
@@ -25,13 +26,13 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
         raise exception
 
     if not permanant:
-        await asyncio.sleep(exception.retry_after if exception.retry_after < 5 else 5)
+        await asyncio.sleep(5)
         await event.context.delete_last_response()
 
 
 def load(bot: lightbulb.BotApp) -> None:
-    bot.add_plugin(pluging)
+    bot.add_plugin(plugin)
 
 
 def unload(bot: lightbulb.BotApp) -> None:
-    bot.remove_plugin(pluging)
+    bot.remove_plugin(plugin)
