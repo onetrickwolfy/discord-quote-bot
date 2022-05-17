@@ -24,7 +24,11 @@ init_logger(logger)
 
 default_enabled_guilds = (964818125503750174)
 
-bot = lightbulb.BotApp(token=token, prefix=">")
+bot = lightbulb.BotApp(
+    token=token,
+    delete_unbound_commands=True,
+    default_enabled_guilds=default_enabled_guilds
+)
 
 bot.load_extensions_from("./extensions/", must_exist=True)
 
