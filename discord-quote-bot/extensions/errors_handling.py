@@ -2,10 +2,10 @@ import hikari
 import lightbulb
 
 
-info_plugin = lightbulb.Plugin("Error Handing")
+pluging = lightbulb.Plugin("Error Handing")
 
 
-@info_plugin.listener(lightbulb.CommandErrorEvent)
+@pluging.listener(lightbulb.CommandErrorEvent)
 async def on_error(event: lightbulb.CommandErrorEvent) -> None:
     if isinstance(event.exception, lightbulb.CommandInvocationError):
         await event.context.respond(f"Something went wrong during invocation of command `{event.context.command.name}`.")
@@ -23,4 +23,9 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
 
 
 def load(bot: lightbulb.BotApp) -> None:
-    bot.add_plugin(info_plugin)
+    bot.add_plugin(pluging)
+    
+    
+def unload(bot : lightbulb.BotApp) -> None:
+	bot.remove_plugin(pluging)
+
