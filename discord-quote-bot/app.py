@@ -21,7 +21,6 @@ init_logger(logger)
 
 
 # SETTING UP THE DISCORD BOT
-token = getenv('discord-token') or conf['token']
 
 default_enabled_guilds = (964818125503750174)
 
