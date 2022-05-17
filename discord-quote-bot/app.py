@@ -32,7 +32,7 @@ if __name__ == "__main__":
     if name != "nt":
         import uvloop
         uvloop.install()
-        
+
 bot.run(
     status=hikari.Status.ONLINE,
     activity=hikari.Activity(
