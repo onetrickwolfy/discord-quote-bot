@@ -5,14 +5,14 @@ test_plugin = lightbulb.Plugin("Test")
 
 
 @test_plugin.command
-@lightbulb.command("ping", "Simple ping command.")
+@lightbulb.command("ping", "Simple ping command.", hidden=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def ping(ctx: lightbulb.Context) -> None:
     await ctx.respond('pong! uwu')
 
 
 @test_plugin.command
-@lightbulb.command("pong", "Simple pong command.")
+@lightbulb.command("pong", "Simple pong command.", hidden=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def ping(ctx: lightbulb.Context) -> None:
     await ctx.respond('ping! owo')
