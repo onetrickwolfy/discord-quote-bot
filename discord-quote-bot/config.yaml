@@ -1,6 +1,6 @@
 logger:
   name: discord_bot
-  log_level: 2
+  log_level: 3
   folder: 'logs'
 
   
