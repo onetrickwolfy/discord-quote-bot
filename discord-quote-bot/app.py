@@ -9,6 +9,7 @@ from yaml import safe_load
 
 
 # LOADING THE CONFIGURATION FILE
+# -----------------------------------------------------
 with open('config.yaml', 'r') as file:
     conf = safe_load(file)
 
@@ -18,11 +19,12 @@ token = getenv('discord-token') or conf['token']
 
 
 # SETTING UP THE LOGGER
+# -----------------------------------------------------
 init_logger(logger)
 
 
 # SETTING UP THE DISCORD BOT
-
+# -----------------------------------------------------
 default_enabled_guilds = (964818125503750174)
 
 bot = lightbulb.BotApp(
