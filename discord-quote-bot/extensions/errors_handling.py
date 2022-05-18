@@ -7,6 +7,9 @@ import lightbulb
 plugin = lightbulb.Plugin("Error Handing")
 
 
+# -----------------------------------------------------
+
+
 @plugin.listener(lightbulb.CommandErrorEvent)
 async def on_error(event: lightbulb.CommandErrorEvent) -> None:
 
@@ -28,6 +31,9 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
     if not permanant:
         await asyncio.sleep(5)
         await event.context.delete_last_response()
+
+
+# -----------------------------------------------------
 
 
 def load(bot: lightbulb.BotApp) -> None:

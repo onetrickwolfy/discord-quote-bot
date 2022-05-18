@@ -1,16 +1,22 @@
 import hikari
 import lightbulb
+from nextcord import Interaction
 
 plugin = lightbulb.Plugin("Quote-Maker")
 
-# add @lightbulb.add_cooldown(15.0, 1,
-# lightbulb.SlashCommandCompletionEvent) later
+# TODO: @lightbulb.add_cooldown(15.0, 1, lightbulb.TheRightBuckeit) later
+
+
+# -----------------------------------------------------
 
 
 # TODO: Implement the check (author must not be @everyone or @here)
 @lightbulb.Check
-def check_author(ctx: lightbulb.Context) -> bool:
+def author_check(ctx: lightbulb.Context) -> bool:
     return True
+
+
+# -----------------------------------------------------
 
 
 @plugin.command
@@ -21,35 +27,31 @@ async def make_quote(ctx: lightbulb.Context) -> None:
 
 
 @plugin.command
-@lightbulb.command("test", "Click to quote this message.")
-@lightbulb.implements(lightbulb.SlashCommand)
-async def make_quote(ctx: lightbulb.Context) -> None:
-    members = ctx.get_guild().get_members()
-
-    for member in ctx.get_guild().get_members().values():
-        # await ctx.bot.rest.create_message(ctx.channel_id, member.mention, user_mentions=True)
-        # await ctx.respond( "@" + member.username + "#" + member.discriminator
-        # + "  " + member.display_name)
-        pass
-
-
-@plugin.command
-@lightbulb.add_checks(check_author)
+@lightbulb.add_checks(author_check)
 @lightbulb.option('author', 'The author of the quote',
-                  required=True, default='anoymous-wolf', choices=[])
+                  required=True, default='anoymous-wolf', autocomplete=True)
 @lightbulb.option('quote', 'The text you would like to quote', required=True)
 @lightbulb.command("quote_this", "Generates a quote when invoked.")
 @lightbulb.implements(lightbulb.SlashCommand)
-async def make_quote(ctx: lightbulb.Context) -> None:
+async def make_quote_cmd(ctx: lightbulb.Context) -> None:
     await ctx.respond('test')
+
+
+@make_quote_cmd.autocomplete("author")
+async def foo_cmd_autocomplete(option, interaction):
+    # extract  in ctx.get_guild().get_members().values():
+    return ['test1', 'test2']
 
 
 @plugin.command
 @lightbulb.option('quote', 'The text you would like to quote', required=True)
 @lightbulb.command("quote_me", "Generates a quote when invoked.")
 @lightbulb.implements(lightbulb.SlashCommand)
-async def make_quote(ctx: lightbulb.Context) -> None:
+async def quote_me_cmd(ctx: lightbulb.Context) -> None:
     await ctx.respond('pong! uwu')
+
+
+# -----------------------------------------------------
 
 
 def load(bot: lightbulb.BotApp) -> None:
