@@ -18,10 +18,9 @@ logger = conf['logger']
 token = getenv('discord-token') or conf['token']
 
 
-# SETTING UP THE LOGGER
+# SETTING UP LOGGING
 # -----------------------------------------------------
 init_logger(logger)
-
 
 # SETTING UP THE DISCORD BOT
 # -----------------------------------------------------
@@ -31,8 +30,7 @@ bot = lightbulb.BotApp(
     token=token,
     intents=Intents.ALL,
     delete_unbound_commands=True,
-    default_enabled_guilds=default_enabled_guilds,
-    logs="WARNING",
+    default_enabled_guilds=default_enabled_guilds
 )
 
 bot.load_extensions_from("./extensions/", must_exist=True)
