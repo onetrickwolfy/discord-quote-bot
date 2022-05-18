@@ -28,6 +28,7 @@ default_enabled_guilds = (964818125503750174)
 
 bot = lightbulb.BotApp(
     token=token,
+    prefix='>',
     intents=Intents.ALL,
     delete_unbound_commands=True,
     default_enabled_guilds=default_enabled_guilds

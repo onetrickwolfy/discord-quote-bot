@@ -4,7 +4,7 @@ import hikari
 import lightbulb
 
 
-plugin = lightbulb.Plugin("Error Handing")
+plugin = lightbulb.Plugin("Error-Handing")
 
 
 # -----------------------------------------------------

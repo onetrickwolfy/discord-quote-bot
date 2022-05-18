@@ -1,6 +1,5 @@
 import hikari
 import lightbulb
-from nextcord import Interaction
 
 plugin = lightbulb.Plugin("Quote-Maker")
 
