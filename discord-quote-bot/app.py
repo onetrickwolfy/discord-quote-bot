@@ -3,6 +3,7 @@ import logging
 
 from os import listdir, getenv, name
 import hikari
+from hikari import Intents
 import lightbulb
 from yaml import safe_load
 
@@ -26,8 +27,10 @@ default_enabled_guilds = (964818125503750174)
 
 bot = lightbulb.BotApp(
     token=token,
+    intents=Intents.ALL,
     delete_unbound_commands=True,
-    default_enabled_guilds=default_enabled_guilds
+    default_enabled_guilds=default_enabled_guilds,
+    logs="WARNING",
 )
 
 bot.load_extensions_from("./extensions/", must_exist=True)

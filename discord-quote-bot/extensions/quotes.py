@@ -24,7 +24,13 @@ async def make_quote(ctx: lightbulb.Context) -> None:
 @lightbulb.command("test", "Click to quote this message.")
 @lightbulb.implements(lightbulb.SlashCommand)
 async def make_quote(ctx: lightbulb.Context) -> None:
-    await ctx.respond(ctx.get_guild().owner_id)
+    members = ctx.get_guild().get_members()
+
+    for member in ctx.get_guild().get_members().values():
+        # await ctx.bot.rest.create_message(ctx.channel_id, member.mention, user_mentions=True)
+        # await ctx.respond( "@" + member.username + "#" + member.discriminator
+        # + "  " + member.display_name)
+        pass
 
 
 @plugin.command
