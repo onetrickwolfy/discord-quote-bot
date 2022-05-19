@@ -37,24 +37,6 @@ async def quote_user_cmd(ctx: lightbulb.Context) -> None:
     await ctx.respond('test')
 
 
-# @plugin.command
-# @lightbulb.add_checks(author_check)
-# @lightbulb.option('author', 'The author of the quote',
-#                    required=True, autocomplete=True)
-# @lightbulb.option('quote', 'The text you would like to quote', required=True)
-# @lightbulb.command("quote_user", "Generates a quote when invoked.")
-# @lightbulb.implements(lightbulb.SlashCommand)
-# async def quote_user_cmd(ctx: lightbulb.Context) -> None:
-#     await ctx.respond('test')
-    
-# @quote_user_cmd.autocomplete("author")
-# async def quote_user_cmd_author_autocomplete(option, interaction):
-#     members = lightbulb.Context.get_guild(interaction).get_members().values()
-#     member_list = [f"{member.username}#{member.discriminator}" for member in members]
-#     return member_list
-
-
-
 @plugin.command
 @lightbulb.option('quote', 'The text you would like to quote', required=True)
 @lightbulb.command("quote_me", "Generates a quote when invoked.")
