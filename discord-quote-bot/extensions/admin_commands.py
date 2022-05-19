@@ -2,6 +2,10 @@ import hikari
 import lightbulb
 
 plugin = lightbulb.Plugin("Admin-Commands")
+plugin.add_checks(
+    lightbulb.guild_only, 
+    lightbulb.has_role_permissions(hikari.Permissions.ADMINISTRATOR)
+)
 
 
 # -----------------------------------------------------
