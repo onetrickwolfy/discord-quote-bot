@@ -12,6 +12,7 @@ plugin = lightbulb.Plugin("Quote-Maker")
 # TODO: Implement the check (author must not be @everyone or @here)
 @lightbulb.Check
 def author_check(ctx: lightbulb.Context) -> bool:
+    print(ctx.interaction.options.index)
     return True
 
 
@@ -19,27 +20,30 @@ def author_check(ctx: lightbulb.Context) -> bool:
 
 
 @plugin.command
-@lightbulb.command("quote", "Click to quote this message.")
+@lightbulb.command("quote_this", "Click to quote this message.")
 @lightbulb.implements(lightbulb.MessageCommand)
-async def make_quote(ctx: lightbulb.Context) -> None:
+async def quote_this_cmd(ctx: lightbulb.Context) -> None:
     await ctx.respond('test')
+
 
 
 @plugin.command
 @lightbulb.add_checks(author_check)
 @lightbulb.option('author', 'The author of the quote',
-                  required=True, default='anoymous-wolf', autocomplete=True)
+                  required=True, autocomplete=True)
 @lightbulb.option('quote', 'The text you would like to quote', required=True)
-@lightbulb.command("quote_this", "Generates a quote when invoked.")
+@lightbulb.command("quote_user", "Generates a quote when invoked.")
 @lightbulb.implements(lightbulb.SlashCommand)
-async def make_quote_cmd(ctx: lightbulb.Context) -> None:
+async def quote_user_cmd(ctx: lightbulb.Context) -> None:
     await ctx.respond('test')
 
 
-@make_quote_cmd.autocomplete("author")
-async def foo_cmd_autocomplete(option, interaction):
-    # extract  in ctx.get_guild().get_members().values():
-    return ['test1', 'test2']
+@quote_user_cmd.autocomplete("author")
+async def quote_user_cmd_author_autocomplete(option, interaction):
+    members = lightbulb.Context.get_guild(interaction).get_members().values()
+    member_list = [f"{member.username}#{member.discriminator}" for member in members]
+    return member_list
+
 
 
 @plugin.command
@@ -47,6 +51,15 @@ async def foo_cmd_autocomplete(option, interaction):
 @lightbulb.command("quote_me", "Generates a quote when invoked.")
 @lightbulb.implements(lightbulb.SlashCommand)
 async def quote_me_cmd(ctx: lightbulb.Context) -> None:
+    await ctx.respond('pong! uwu')
+
+
+@plugin.command
+@lightbulb.option('quote', 'The text you would like to quote', required=True)
+@lightbulb.option('author', 'The author of the quote', default='anonymous-wolf')
+@lightbulb.command("quote_anon", "Generates a quote when invoked.")
+@lightbulb.implements(lightbulb.SlashCommand)
+async def quote_anon_cmd(ctx: lightbulb.Context) -> None:
     await ctx.respond('pong! uwu')
 
 
