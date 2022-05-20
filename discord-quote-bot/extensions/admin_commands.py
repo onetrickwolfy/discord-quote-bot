@@ -27,6 +27,7 @@ async def set_as_hall_of_fame(ctx: lightbulb.Context):
      required=True, choices=['global', 'teleport', 'mixed']
     )
 @lightbulb.command('set_mode', 'Select the mode for bot.')
+@lightbulb.implements(lightbulb.SlashCommand)
 async def set_mode(ctx: lightbulb.Context):
     await ctx.respond('todo')
 
