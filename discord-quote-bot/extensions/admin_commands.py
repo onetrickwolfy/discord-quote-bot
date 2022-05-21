@@ -2,6 +2,8 @@ import hikari
 import lightbulb
 from utils import guilds_settings
 from tinydb import Query
+from tinydb.operations import delete
+from utils import  get_config
 
 plugin = lightbulb.Plugin("Admin-Commands")
 plugin.add_checks(
@@ -9,8 +11,13 @@ plugin.add_checks(
     lightbulb.has_guild_permissions(hikari.Permissions.ADMINISTRATOR)
 )
 
+conf = get_config()
 
 # -----------------------------------------------------
+
+# improvement:
+# enable/disable global is better.
+# set/unset hall_of_fame
 
 
 @plugin.command
@@ -27,13 +34,28 @@ async def set_as_hall_of_fame(ctx: lightbulb.Context):
         Query().guild_id == ctx.guild_id
     )
 
-    await ctx.respond('This channel has been set has the hall of fame.')
+    await ctx.respond('This channel has been set as the hall of fame.')
+    
+@plugin.command
+@lightbulb.command("remove_hall_of_fame",
+                   "Unregister the channel as hall of fame.")
+@lightbulb.implements(lightbulb.SlashCommand)
+async def remove_hall_of_fame(ctx: lightbulb.Context):
+
+    guilds_settings.upsert(
+        {
+            'hall_of_fame': None
+        },
+        Query().guild_id == ctx.guild_id
+    )
+
+    await ctx.respond('This channel has been unregistered as the hall of fame.')
 
 
 @plugin.command
 @lightbulb.option(
     'mode', 'Teleport/Mixed will send quotes in the hall of fame.',
-    choices=['global', 'teleport', 'mixed'],
+    choices= conf['modes'],
     required=True
 )
 @lightbulb.command('set_mode', 'Select the mode for bot.', pass_options=True)
