@@ -1,3 +1,3 @@
 from .logging import init_logger
 from .utils import get_config
-from .database import database
+from .database import guilds_settings

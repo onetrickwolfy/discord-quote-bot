@@ -127,3 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+discord-quote-bot/quote_bot_db.db
