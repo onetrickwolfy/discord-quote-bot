@@ -4,10 +4,4 @@ logger:
   folder: 'logs'
 
 db_name: quote_bot_db.db
-
-modes:
-  global: 'global'
-  teleport: 'teleport'
-  mixed: 'mixed'
-
   

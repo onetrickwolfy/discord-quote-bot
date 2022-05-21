@@ -1,9 +1,10 @@
+from multiprocessing import context
 import hikari
 import lightbulb
 from utils import guilds_settings
 from tinydb import Query
 from tinydb.operations import delete
-from utils import  get_config
+from utils import get_config
 
 plugin = lightbulb.Plugin("Admin-Commands")
 plugin.add_checks(
@@ -13,19 +14,22 @@ plugin.add_checks(
 
 conf = get_config()
 
-# -----------------------------------------------------
 
-# improvement:
-# enable/disable global is better.
-# set/unset hall_of_fame
+# -----------------------------------------------------
 
 
 @plugin.command
-@lightbulb.command("set_as_hall_of_fame",
-                   "Quotes generated with the bot will appear in this channel.")
-@lightbulb.implements(lightbulb.SlashCommand)
-async def set_as_hall_of_fame(ctx: lightbulb.Context):
+@lightbulb.command('hall_of_fame',
+                   'If set, quotes will be sent in the hall of fame.')
+@lightbulb.implements(lightbulb.SlashCommandGroup)
+async def hall_of_fame_grp(ctx: lightbulb.Context):
+    pass
 
+
+@hall_of_fame_grp.child
+@lightbulb.command('set', 'Sets a channel as the hall of fame')
+@lightbulb.implements(lightbulb.SlashSubCommand)
+async def toggle_scmd(ctx: lightbulb.Context):
     guilds_settings.upsert(
         {
             'guild_id': ctx.guild_id,
@@ -35,47 +39,82 @@ async def set_as_hall_of_fame(ctx: lightbulb.Context):
     )
 
     await ctx.respond('This channel has been set as the hall of fame.')
-    
-@plugin.command
-@lightbulb.command("remove_hall_of_fame",
-                   "Unregister the channel as hall of fame.")
-@lightbulb.implements(lightbulb.SlashCommand)
-async def remove_hall_of_fame(ctx: lightbulb.Context):
 
+
+@hall_of_fame_grp.child
+@lightbulb.command('unset', 'Unsets the hall of fame.')
+@lightbulb.implements(lightbulb.SlashSubCommand)
+async def toggle_scmd(ctx: lightbulb.Context):
     guilds_settings.upsert(
         {
+            'guild_id': ctx.guild_id,
             'hall_of_fame': None
         },
         Query().guild_id == ctx.guild_id
     )
 
-    await ctx.respond('This channel has been unregistered as the hall of fame.')
+    await ctx.respond('The hall of fame has been unset.')
+
+
+# -----------------------------------------------------
 
 
 @plugin.command
-@lightbulb.option(
-    'mode', 'Teleport/Mixed will send quotes in the hall of fame.',
-    choices= conf['modes'],
-    required=True
-)
-@lightbulb.command('set_mode', 'Select the mode for bot.', pass_options=True)
-@lightbulb.implements(lightbulb.SlashCommand)
-async def set_mode(ctx: lightbulb.Context, mode=str):
+@lightbulb.command('global_mode', 'Enables and disables the global mode.')
+@lightbulb.implements(lightbulb.SlashCommandGroup)
+async def global_mode_grp(ctx: lightbulb.context):
+    pass
 
-    row_id = guilds_settings.upsert(
+
+@global_mode_grp. child
+@lightbulb.command('enable',
+                   'The bot will reply in the channel it was invocated in.')
+@lightbulb.implements(lightbulb.SlashSubCommand)
+async def enable_scmd(ctx: lightbulb.Context):
+    guilds_settings.upsert(
         {
             'guild_id': ctx.guild_id,
-            'mode': mode
+            'global': True
         },
         Query().guild_id == ctx.guild_id
     )
 
-    await ctx.respond(f'You mode has been changed to {mode}')
+    await ctx.respond('Global mode has been activated.')
 
-    if not mode == 'global' and not guilds_settings.get(
-            doc_id=row_id[0]).get('hall_of_fame'):
-        await ctx.respond('Do not forget to define a hall of fame.', reply=False)
 
+@global_mode_grp. child
+@lightbulb.command('disable',
+                   'The bot will only reply in the hall of fame, if set.')
+@lightbulb.implements(lightbulb.SlashSubCommand)
+async def disable_scmd(ctx: lightbulb.Context):
+    row_id = guilds_settings.upsert(
+        {
+            'guild_id': ctx.guild_id,
+            'global': False
+        },
+        Query().guild_id == ctx.guild_id
+    )
+
+    await ctx.respond('Global mode has been disabled.')
+
+    if not guilds_settings.get(doc_id=row_id[0]).get('hall_of_fame'):
+        await ctx.respond('Do not forget to define the hall of fame.', reply=False)
+
+
+# -----------------------------------------------------
+
+@plugin.command
+@lightbulb.command('settings', 'Display the current settings')
+@lightbulb.implements(lightbulb.SlashCommand)
+async def display_settings(ctx: lightbulb.context):
+    guild = guilds_settings.get(Query().guild_id == ctx.guild_id)
+
+    await ctx.respond('\n'.join([
+        f"Guild Id: {guild['guild_id']}",
+        f"Global mode: {'Enabled' if (guild['global']) else 'Disabled'}",
+        f"Hall of fame: {guild['hall_of_fame'] if (guild['global']) else 'Unset'}"
+    ])
+    )
 
 # -----------------------------------------------------
 
