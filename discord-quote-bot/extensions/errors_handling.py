@@ -1,5 +1,3 @@
-import asyncio
-from time import sleep
 import hikari
 import lightbulb
 import logging

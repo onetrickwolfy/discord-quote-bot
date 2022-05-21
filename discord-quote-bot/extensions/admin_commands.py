@@ -1,5 +1,3 @@
-from multiprocessing import context
-from re import S
 import hikari
 import lightbulb
 from utils import guilds_settings

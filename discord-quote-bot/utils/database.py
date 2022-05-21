@@ -1,4 +1,4 @@
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 from utils import get_config
 from tinydb_smartcache import SmartCacheTable
 
