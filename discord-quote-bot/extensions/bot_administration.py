@@ -9,7 +9,8 @@ plugin.add_checks(lightbulb.owner_only)
 
 
 @plugin.command
-@lightbulb.command("reload_extension", "reload extensions", hidden=True, guilds=guilds)
+@lightbulb.command("reload_extension", "reload extensions",
+                   hidden=True, guilds=guilds)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def reload_extension(ctx: lightbulb.Context):
     [ctx.bot.reload_extensions(ext) for ext in ctx.bot.extensions]
@@ -26,14 +27,16 @@ async def sync_application_commands(ctx: lightbulb.Context):
 
 
 @plugin.command
-@lightbulb.command("get_latency", "send the current latency", hidden=True, guilds=guilds)
+@lightbulb.command("get_latency", "send the current latency",
+                   hidden=True, guilds=guilds)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def get_latency(ctx: lightbulb.Context):
     await ctx.respond(ctx.bot.heartbeat_latency, reply=False)
 
 
 @plugin.command
-@lightbulb.command("purge_commands", "purge the commands", hidden=True, guilds=guilds)
+@lightbulb.command("purge_commands", "purge the commands",
+                   hidden=True, guilds=guilds)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def purge_commands(ctx: lightbulb.Context):
     await ctx.bot.purge_application_commands(global_commands=True)

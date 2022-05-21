@@ -3,4 +3,6 @@ logger:
   log_level: 20
   folder: 'logs'
 
+db_name: quote_bot_db.db
+
   

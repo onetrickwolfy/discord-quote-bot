@@ -1,8 +1,8 @@
-"""Set-up the logger for the project"""
-
-
 import logging
 from os import path, makedirs
+
+
+# -----------------------------------------------------
 
 
 def create_if_missing(folder: str) -> None:

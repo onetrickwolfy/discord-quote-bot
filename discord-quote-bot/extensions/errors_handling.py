@@ -21,7 +21,6 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
     # Unwrap the exception to get the original cause
     exception = event.exception.__cause__ or event.exception
 
-
     if isinstance(exception, lightbulb.NotOwner):
         await event.context.respond("You are not the owner of this bot.", reply=True, delete_after=5)
     elif isinstance(exception, lightbulb.CommandIsOnCooldown):
