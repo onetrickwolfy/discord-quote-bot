@@ -1,6 +1,6 @@
 import logging
 from os import path, makedirs
-
+from time import time, strftime, gmtime
 
 # -----------------------------------------------------
 
@@ -24,9 +24,10 @@ def init_logger(logger_conf: dict) -> None:
     logger = logging.getLogger()
 
     logger.setLevel(log_level)
-
+    
+    run_time = strftime("%d_%b_%Y.%Hh%M", gmtime(time()))
     files = logging.FileHandler(
-        filename=f'{log_folder}/{name}.log',
+        filename=f'{log_folder}/{name}_{run_time}.log',
         encoding='utf-8',
         mode='w'
     )
