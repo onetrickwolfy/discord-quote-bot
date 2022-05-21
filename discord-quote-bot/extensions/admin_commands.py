@@ -20,41 +20,41 @@ plugin.add_checks(
                    "Quotes generated with the bot will appear in this channel.")
 @lightbulb.implements(lightbulb.SlashCommand)
 async def set_as_hall_of_fame(ctx: lightbulb.Context):
-    
+
     guilds_settings.upsert(
         {
-                'guild_id': ctx.guild_id,
-                'hall_of_fame': ctx.channel_id
+            'guild_id': ctx.guild_id,
+            'hall_of_fame': ctx.channel_id
         },
         Query().guild_id == ctx.guild_id
     )
-    
-    await ctx.respond('This channel has been set has the hall of fame.')
 
+    await ctx.respond('This channel has been set has the hall of fame.')
 
 
 @plugin.command
 @lightbulb.option(
     'mode', 'Teleport/Mixed will send quotes in the hall of fame.',
-    required=True, 
-    choices=['global', 'teleport', 'mixed']
+    choices=['global', 'teleport', 'mixed'],
+    required=True
 )
 @lightbulb.command('set_mode', 'Select the mode for bot.', pass_options=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def set_mode(ctx: lightbulb.Context, mode=str):
-    
+
     row_id = guilds_settings.upsert(
         {
-                'guild_id': ctx.guild_id,
-                'mode': mode
+            'guild_id': ctx.guild_id,
+            'mode': mode
         },
         Query().guild_id == ctx.guild_id
     )
-    
-    if not guilds_settings.get(doc_id=row_id).get('hall_of_fame'):
-        await ctx.respond('Do not forget  to define a hall of fame.', reply=False)
-    
+
     await ctx.respond(f'You mode has been changed to {mode}')
+
+    if not mode == 'global' and not guilds_settings.get(
+            doc_id=row_id[0]).get('hall_of_fame'):
+        await ctx.respond('Do not forget to define a hall of fame.', reply=False)
 
 
 # -----------------------------------------------------
