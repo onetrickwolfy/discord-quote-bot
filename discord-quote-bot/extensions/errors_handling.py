@@ -11,9 +11,10 @@ plugin = lightbulb.Plugin("Error-Handing")
 class CharacterLimitException(lightbulb.LightbulbError):
     """Raised when a character limit has been reached"""
 
-    def __init__(self, limit):
+    def __init__(self, limit, field):
         super().__init__()
         self.limit = limit
+        self.field = field
 
 
 class NoChannelAttributed(lightbulb.LightbulbError):
@@ -61,7 +62,7 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
     elif isinstance(exception, lightbulb.MissingRequiredPermission):
         await event.context.respond(f"You need the {exception.missing_perms} permission in order to run this command.", reply=True, delete_after=5)
     elif isinstance(exception, CharacterLimitException):
-        await event.context.respond(f'This quote is way too long! It has to be inferior to {exception.limit} characters.', reply=True, delete_after=5)
+        await event.context.respond(f'This {exception.field} is way too long! It has to be inferior to {exception.limit} characters.', reply=True, delete_after=5)
     elif isinstance(exception, NoChannelAttributed):
         await event.context.respond(f'The bot could not respond in any channel. Check your settings: /settings', reply=True, delete_after=5)
     elif isinstance(exception, MissingParameterException):

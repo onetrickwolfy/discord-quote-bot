@@ -10,10 +10,8 @@ from .errors_handling import CharacterLimitException
 from .errors_handling import NoChannelAttributed
 from .errors_handling import MissingParameterException
 from utils import guilds_settings
-import concurrent.futures
-
-
 import typing
+
 
 plugin = lightbulb.Plugin("Quote-Maker")
 
@@ -29,9 +27,13 @@ async def handle_response(
 ) -> None:
 
     if not quote:
-        raise MissingParameterException('Quote')
+        raise MissingParameterException('quote')
+    
     if len(quote) > 420:
-        raise CharacterLimitException(420)
+        raise CharacterLimitException(420, 'quote')
+    
+    if len(username) > 38:
+        raise CharacterLimitException(38, 'username')
 
     guild = Query()
     param = guilds_settings.search(guild.guild_id == ctx.guild_id)[0]
