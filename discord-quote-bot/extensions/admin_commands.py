@@ -112,7 +112,7 @@ async def display_settings(ctx: lightbulb.context):
     await ctx.respond('\n'.join([
         f"Guild Id: {guild['guild_id']}",
         f"Global mode: {'Enabled' if (guild['global']) else 'Disabled'}",
-        f"Hall of fame: {guild['hall_of_fame'] if (guild['global']) else 'Unset'}"
+        f"Hall of fame: {guild['hall_of_fame'] if (guild['hall_of_fame']) else 'Unset'}"
     ])
     )
 
