@@ -1,15 +1,10 @@
 import logging
 from os import path, makedirs
 from time import time, strftime, gmtime
+from utils import create_if_missing
+
 
 # -----------------------------------------------------
-
-
-def create_if_missing(folder: str) -> None:
-    """Create folder if non-existent"""
-
-    if not path.exists(folder):
-        makedirs(folder)
 
 
 def init_logger(logger_conf: dict) -> None:
@@ -24,7 +19,7 @@ def init_logger(logger_conf: dict) -> None:
     logger = logging.getLogger()
 
     logger.setLevel(log_level)
-    
+
     run_time = strftime("%d_%b_%Y.%Hh%M", gmtime(time()))
     files = logging.FileHandler(
         filename=f'{log_folder}/{name}_{run_time}.log',

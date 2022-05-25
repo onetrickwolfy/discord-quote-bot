@@ -1,12 +1,15 @@
+import aiohttp
+import concurrent.futures
 from utils import *
 import logging
 from os import listdir, getenv, name as os_name
 import hikari
-from hikari import Intents
+import asyncio
 import lightbulb
 from utils import get_config
 from utils import guilds_settings
 from tinydb import Query
+from multiprocessing import freeze_support
 
 
 # LOADING THE CONFIGURATION FILE
@@ -16,6 +19,9 @@ conf = get_config()
 logger = conf['logger']
 
 token = getenv('discord-token') or conf['token']
+
+
+# -----------------------------------------------------
 
 
 # SETTING UP LOGGING
@@ -29,7 +35,7 @@ default_enabled_guilds = (964818125503750174)
 bot = lightbulb.BotApp(
     token=token,
     prefix='>',
-    intents=Intents.ALL,
+    intents=hikari.Intents.ALL,
     delete_unbound_commands=True,
     default_enabled_guilds=default_enabled_guilds
 )
@@ -54,15 +60,30 @@ async def on_guild_leave(event: hikari.GuildLeaveEvent) -> None:
     guilds_settings.remove(Query().guild_id == event.guild_id)
 
 
+@bot.listen()
+async def on_starting(event: hikari.StartingEvent) -> None:
+    bot.d.loop = asyncio.get_running_loop()
+    bot.d.aio_session = aiohttp.ClientSession()
+    bot.d.process_pool = concurrent.futures.ProcessPoolExecutor(5)
+    
+
+
+if __name__ == "__main__":
+    if os_name != "nt":
+        import uvloop  # type: ignore (uvloop does not exist on windows.)
+        uvloop.install()
+    
+
+
 if __name__ == "__main__":
     if os_name != "nt":
         import uvloop  # type: ignore (uvloop does not exist on windows.)
         uvloop.install()
 
-bot.run(
-    status=hikari.Status.ONLINE,
-    activity=hikari.Activity(
-        name="all of you, cuties!",
-        type=hikari.ActivityType.LISTENING
+    bot.run(
+        status=hikari.Status.ONLINE,
+        activity=hikari.Activity(
+            name="all of you, cuties!",
+            type=hikari.ActivityType.LISTENING
+        )
     )
-)

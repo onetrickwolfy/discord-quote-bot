@@ -6,6 +6,7 @@ attrs==21.4.0
 autopep8==1.6.0
 Brotli==1.0.9
 cchardet==2.1.7
+certifi==2022.5.18.1
 cffi==1.15.0
 chardet==4.0.0
 charset-normalizer==2.0.12
@@ -23,7 +24,11 @@ pycares==4.1.2
 pycodestyle==2.8.0
 pycparser==2.21
 PyYAML==6.0
+requests==2.27.1
+tinydb==4.7.0
+tinydb-smartcache==2.0.0
 toml==0.10.2
 typing_extensions==4.2.0
+urllib3==1.26.9
 yarl==1.7.2
 uvloop>=0.16; sys_platform != "win32"
