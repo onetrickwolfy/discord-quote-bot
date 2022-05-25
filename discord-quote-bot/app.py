@@ -30,11 +30,11 @@ init_logger(logger)
 default_enabled_guilds = (964818125503750174)
 
 if __name__ == "__main__":
-    
+
     if os_name != "nt":
         import uvloop  # type: ignore (uvloop does not exist on windows.)
         uvloop.install()
-    
+
     bot = lightbulb.BotApp(
         token=token,
         prefix='>',
@@ -44,7 +44,6 @@ if __name__ == "__main__":
     )
 
     bot.load_extensions_from("./extensions/", must_exist=True)
-
 
     @bot.listen()
     async def on_guild_join(event: hikari.GuildJoinEvent) -> None:
@@ -57,18 +56,15 @@ if __name__ == "__main__":
             Query().guild_id == event.guild_id
         )
 
-
     @bot.listen()
     async def on_guild_leave(event: hikari.GuildLeaveEvent) -> None:
         guilds_settings.remove(Query().guild_id == event.guild_id)
-
 
     @bot.listen()
     async def on_starting(event: hikari.StartingEvent) -> None:
         bot.d.loop = asyncio.get_running_loop()
         bot.d.aio_session = aiohttp.ClientSession()
         bot.d.process_pool = concurrent.futures.ProcessPoolExecutor()
-        
 
     bot.run(
         status=hikari.Status.ONLINE,
