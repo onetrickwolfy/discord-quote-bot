@@ -21,9 +21,6 @@ logger = conf['logger']
 token = getenv('discord-token') or conf['token']
 
 
-# -----------------------------------------------------
-
-
 # SETTING UP LOGGING
 # -----------------------------------------------------
 init_logger(logger)
@@ -66,14 +63,6 @@ async def on_starting(event: hikari.StartingEvent) -> None:
     bot.d.aio_session = aiohttp.ClientSession()
     bot.d.process_pool = concurrent.futures.ProcessPoolExecutor(5)
     
-
-
-if __name__ == "__main__":
-    if os_name != "nt":
-        import uvloop  # type: ignore (uvloop does not exist on windows.)
-        uvloop.install()
-    
-
 
 if __name__ == "__main__":
     if os_name != "nt":
