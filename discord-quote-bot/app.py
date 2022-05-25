@@ -18,7 +18,7 @@ conf = get_config()
 
 logger = conf['logger']
 
-token = getenv('discord-token') or conf['token']
+token = ('discord-token') or conf['token']
 
 
 # SETTING UP LOGGING
@@ -29,45 +29,46 @@ init_logger(logger)
 # -----------------------------------------------------
 default_enabled_guilds = (964818125503750174)
 
-bot = lightbulb.BotApp(
-    token=token,
-    prefix='>',
-    intents=hikari.Intents.ALL,
-    delete_unbound_commands=True,
-    default_enabled_guilds=default_enabled_guilds
-)
-
-bot.load_extensions_from("./extensions/", must_exist=True)
-
-
-@bot.listen()
-async def on_guild_join(event: hikari.GuildJoinEvent) -> None:
-    guilds_settings.upsert(
-        {
-            'guild_id': event.guild_id,
-            'global': True,
-            'hall_of_fame': None
-        },
-        Query().guild_id == event.guild_id
-    )
-
-
-@bot.listen()
-async def on_guild_leave(event: hikari.GuildLeaveEvent) -> None:
-    guilds_settings.remove(Query().guild_id == event.guild_id)
-
-
-@bot.listen()
-async def on_starting(event: hikari.StartingEvent) -> None:
-    bot.d.loop = asyncio.get_running_loop()
-    bot.d.aio_session = aiohttp.ClientSession()
-    bot.d.process_pool = concurrent.futures.ProcessPoolExecutor(5)
-    
-
 if __name__ == "__main__":
+    
     if os_name != "nt":
         import uvloop  # type: ignore (uvloop does not exist on windows.)
         uvloop.install()
+    
+    bot = lightbulb.BotApp(
+        token=token,
+        prefix='>',
+        intents=hikari.Intents.ALL,
+        delete_unbound_commands=True,
+        default_enabled_guilds=default_enabled_guilds
+    )
+
+    bot.load_extensions_from("./extensions/", must_exist=True)
+
+
+    @bot.listen()
+    async def on_guild_join(event: hikari.GuildJoinEvent) -> None:
+        guilds_settings.upsert(
+            {
+                'guild_id': event.guild_id,
+                'global': True,
+                'hall_of_fame': None
+            },
+            Query().guild_id == event.guild_id
+        )
+
+
+    @bot.listen()
+    async def on_guild_leave(event: hikari.GuildLeaveEvent) -> None:
+        guilds_settings.remove(Query().guild_id == event.guild_id)
+
+
+    @bot.listen()
+    async def on_starting(event: hikari.StartingEvent) -> None:
+        bot.d.loop = asyncio.get_running_loop()
+        bot.d.aio_session = aiohttp.ClientSession()
+        bot.d.process_pool = concurrent.futures.ProcessPoolExecutor()
+        
 
     bot.run(
         status=hikari.Status.ONLINE,
@@ -76,3 +77,5 @@ if __name__ == "__main__":
             type=hikari.ActivityType.LISTENING
         )
     )
+
+    freeze_support()
