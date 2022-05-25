@@ -1,8 +1,12 @@
 import hikari
 import lightbulb
+from utils import get_config
+
+conf = get_config()
+
 
 plugin = lightbulb.Plugin("Bot-Administration")
-guilds = [964818125503750174]
+guilds = [conf['owner_guild']]
 plugin.add_checks(lightbulb.owner_only)
 
 # -----------------------------------------------------

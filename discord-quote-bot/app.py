@@ -17,7 +17,6 @@ from multiprocessing import freeze_support
 conf = get_config()
 
 logger = conf['logger']
-
 token = ('discord-token') or conf['token']
 
 

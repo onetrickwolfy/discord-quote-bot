@@ -4,4 +4,5 @@ logger:
   folder: 'logs'
 
 db_name: quote_bot_db.db
-  
+
+owner_guild: 964818125503750174
